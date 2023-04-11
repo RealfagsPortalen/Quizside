@@ -2,12 +2,12 @@ import { FC } from "react";
 import { LatexText } from "./LatexText";
 
 export const ToggleSelect: FC<{
-  onClick: () => void;
+  onChange: () => void;
   checked: boolean;
   label: string;
-}> = ({ label, onClick, checked }) => (
+}> = ({ label, onChange, checked }) => (
   <div>
-    <input type="checkbox" onClick={onClick} checked={checked} />
+    <input type="checkbox" onChange={onChange} checked={checked} />
     <label>
       <LatexText latex={label} />
     </label>

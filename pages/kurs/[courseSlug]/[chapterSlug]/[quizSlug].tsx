@@ -4,10 +4,11 @@ import { mockData } from "../../../../mockData";
 import { css } from "@emotion/react";
 import { useQuizReducer } from "@features/quiz/quizReducer";
 import { QuestionCounter } from "@features/quiz/QuestionCounter";
-import { ToggleSelect } from "../../../../ui/toggleSelect";
-import { Button } from "../../../../ui/button";
 import katex from "katex";
 import { LatexText } from "../../../../ui/LatexText";
+import { Eye } from "../../../../ui/Eye";
+import { ToggleSelect } from "../../../../ui/ToggleSelect";
+import { Button } from "../../../../ui/Button";
 
 interface QuizDetailPageProps {
   quiz: typeof mockData.courses[0]["chapters"][0]["topics"][0]["quizzes"][0];
@@ -56,7 +57,7 @@ const Quiz: React.FC<QuizDetailPageProps> = ({ quiz }) => {
       <div>
         {question.answerOptions.map((answerOption, i) => (
           <ToggleSelect
-            onClick={() => dispatch({ type: "SELECT_ANSWER", answer: i })}
+            onChange={() => dispatch({ type: "SELECT_ANSWER", answer: i })}
             label={answerOption.optionText}
             checked={state.selectedAnswer === i}
           />
@@ -64,6 +65,7 @@ const Quiz: React.FC<QuizDetailPageProps> = ({ quiz }) => {
       </div>
       <Button onClick={() => dispatch({ type: "CHECK_ANSWER" })}>
         Show answer
+        <Eye />
       </Button>
       {state.showAnswer && <LatexText latex={question.solution} />}
     </main>
