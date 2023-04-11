@@ -1,79 +1,148 @@
-/* Next.js CSS Reset */
+:root {
+  --color-gray-50: #f9fafc;
+  --color-gray-100: #f3f2f9;
+  --color-gray-200: #e5e3f0;
+  --color-gray-300: #cfcde0;
+  --color-gray-400: #9e98b7;
+  --color-gray-500: #6e6889;
+  --color-gray-600: #504b68;
+  --color-gray-700: #3c3754;
+  --color-gray-800: #26213a;
+  --color-gray-900: #181129;
+  --color-primary-200: #ffc90b;
+  --color-primary-300: #e3b800;
+  --color-error-300: #e8a4a2;
+  --color-error-400: #e07f7c;
+  --color-error-500: #da5d56;
+  --color-error-700: #9d271a;
+  --color-success-300: #68cf7b;
+  --color-success-400: #54ae5f;
+  --color-success-500: #428142;
+  --color-success-700: #2a5027;
 
-/* Box sizing rules */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+  --rounded: 0.5rem;
 }
 
-/* Remove default margin */
-body,
-h1,
-h2,
-h3,
-h4,
-p,
-figure,
-blockquote,
-dl,
-dd {
-  margin: 0;
-}
-
-/* Remove list styles on ul, ol elements with a top level class of .list */
-.list,
-ol,
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-/* Set default padding for buttons */
-button,
-input[type="button"],
-input[type="reset"],
-input[type="submit"] {
-  padding: 0;
-}
-
-/* Remove default border */
-button,
-input {
-  border: none;
-  outline: none;
-}
-
-/* Remove horizontal padding */
-fieldset {
-  padding: 0;
-}
-
-/* Ensure horizontal consistency */
-body,
-input,
-select,
-textarea {
-  font: 16px/1.4 sans-serif;
-}
-
-/* Remove default vertical scrollbar in Firefox */
 html {
-  overflow-y: scroll;
+  font-size: 100%;
 }
 
-/* Remove default padding on media elements */
-audio,
-canvas,
-iframe,
-img,
-svg,
-video {
-  vertical-align: middle;
+body {
+  font-family: "Heebo", sans-serif;
 }
 
-a {
-  color: inherit;
+.text-style-heading-heading-1 {
+  font-size: 2.5rem;
+  font-family: "Heebo";
+  font-weight: 500;
+  font-style: normal;
+  line-height: 140%;
+  letter-spacing: -0.02em;
   text-decoration: none;
+  text-transform: none;
+}
+.text-style-heading-heading-2 {
+  font-size: 2rem;
+  font-family: "Heebo";
+  font-weight: 500;
+  font-style: normal;
+  line-height: 140%;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  text-transform: none;
+}
+.text-style-heading-heading-3 {
+  font-size: 1.5rem;
+  font-family: "Heebo";
+  font-weight: 500;
+  font-style: normal;
+  line-height: 140%;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  text-transform: none;
+}
+.text-style-heading-heading-4 {
+  font-size: 1.25rem;
+  font-family: "Heebo";
+  font-weight: 500;
+  font-style: normal;
+  line-height: 140%;
+  text-decoration: none;
+  text-transform: none;
+}
+.text-style-body-body-1 {
+  font-size: 1rem;
+  font-family: "Heebo";
+  font-weight: 400;
+  font-style: normal;
+  line-height: 160%;
+  text-decoration: none;
+  text-transform: none;
+}
+.text-style-body-body-1-semibold {
+  font-size: 1rem;
+  font-family: "Heebo";
+  font-weight: 500;
+  font-style: normal;
+  line-height: 160%;
+  text-decoration: none;
+  text-transform: none;
+}
+.text-style-body-body-2 {
+  font-size: 0.875rem;
+  font-family: "Heebo";
+  font-weight: 400;
+  font-style: normal;
+  line-height: 160%;
+  text-decoration: none;
+  text-transform: none;
+}
+.text-style-body-body-2-semibold {
+  font-size: 0.875rem;
+  font-family: "Heebo";
+  font-weight: 500;
+  font-style: normal;
+  line-height: 160%;
+  text-decoration: none;
+  text-transform: none;
+}
+.text-style-other-caption {
+  font-size: 0.75rem;
+  font-family: "Heebo";
+  font-weight: 400;
+  font-style: normal;
+  line-height: 160%;
+  text-decoration: none;
+  text-transform: none;
+}
+.text-style-other-overline {
+  font-size: 0.75rem;
+  font-family: "Heebo";
+  font-weight: 400;
+  font-style: normal;
+  line-height: 120%;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.text-style-math-question {
+  font-size: 1.5rem;
+  font-family: "Noto Sans Math";
+  font-weight: 400;
+  font-style: normal;
+  line-height: 160%;
+  text-decoration: none;
+  text-transform: none;
+}
+.text-style-math-answer {
+  font-size: 1rem;
+  font-family: "Noto Sans Math";
+  font-weight: 400;
+  font-style: normal;
+  line-height: 160%;
+  text-decoration: none;
+  text-transform: none;
+}
+.effect-style-box-shadow {
+  box-shadow: -5px 5px 0px #ede8ff;
 }

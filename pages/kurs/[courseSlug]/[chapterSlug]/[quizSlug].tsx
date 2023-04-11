@@ -1,14 +1,9 @@
 import * as React from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { mockData } from "../../../../mockData";
-import { css } from "@emotion/react";
 import { useQuizReducer } from "@features/quiz/quizReducer";
-import { QuestionCounter } from "@features/quiz/QuestionCounter";
-import katex from "katex";
-import { LatexText } from "../../../../ui/LatexText";
-import { Eye } from "../../../../ui/Eye";
-import { ToggleSelect } from "../../../../ui/ToggleSelect";
-import { Button } from "../../../../ui/Button";
+import { QuizQuestion } from "@features/quiz/components/QuizQuestion";
+import { QuizResult } from "@features/quiz/components/QuizResult";
 
 interface QuizDetailPageProps {
   quiz: typeof mockData.courses[0]["chapters"][0]["topics"][0]["quizzes"][0];
@@ -19,56 +14,12 @@ interface QuizDetailPageProps {
 
 const Quiz: React.FC<QuizDetailPageProps> = ({ quiz }) => {
   const [state, dispatch] = useQuizReducer(quiz);
-
-  React.useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      switch (e.key) {
-        case "ArrowUp":
-          dispatch({ type: "UP" });
-          break;
-        case "ArrowDown":
-          dispatch({ type: "DOWN" });
-          break;
-      }
-    };
-
-    window.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, []);
-
   const question = quiz.questions[state.questionNumber];
 
-  return (
-    <main>
-      <QuestionCounter
-        questionCount={quiz.questions.length}
-        questionNumber={state.questionNumber}
-      />
-      <Button onClick={() => dispatch({ type: "PREVIOUS" })}>Forrige</Button>
-      <Button onClick={() => dispatch({ type: "NEXT" })}>Neste</Button>
-      <div>
-        <h1>
-          <LatexText latex={question.questionText} />
-        </h1>
-      </div>
-      <div>
-        {question.answerOptions.map((answerOption, i) => (
-          <ToggleSelect
-            onChange={() => dispatch({ type: "SELECT_ANSWER", answer: i })}
-            label={answerOption.optionText}
-            checked={state.selectedAnswer === i}
-          />
-        ))}
-      </div>
-      <Button onClick={() => dispatch({ type: "CHECK_ANSWER" })}>
-        Show answer
-        <Eye />
-      </Button>
-      {state.showAnswer && <LatexText latex={question.solution} />}
-    </main>
+  return state.finished ? (
+    <QuizResult state={state} dispatch={dispatch} />
+  ) : (
+    <QuizQuestion state={state} dispatch={dispatch} question={question} />
   );
 };
 

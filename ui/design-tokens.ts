@@ -28,3 +28,7 @@ export const colors = {
     700: "#9D271A",
   },
 };
+
+export const borderRadius = {
+  default: "0.5rem",
+};

@@ -15,7 +15,9 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@features/*": ["./features/*"]
+      "@features/*": ["./features/*"],
+      "@ui/*": ["./ui/*"],
+      "@types": ["./types.ts"]
     },
     "jsxImportSource": "@emotion/react"
   },

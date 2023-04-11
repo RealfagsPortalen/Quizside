@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BlockMath } from "react-katex";
+import { BlockMath, InlineMath } from "react-katex";
 
 interface LatexTextProps {
   latex: string;
@@ -7,12 +7,12 @@ interface LatexTextProps {
 
 export const LatexText: React.FC<LatexTextProps> = ({ latex }) => {
   return (
-    <BlockMath
+    <InlineMath
       math={latex}
       renderError={(error) => {
-        console.error(error);
+        // console.error(error);
 
-        return <div>Fail: {error.name}</div>;
+        return <p>Fail: {error.name}</p>;
       }}
     />
   );
