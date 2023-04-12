@@ -410,3 +410,6 @@ export type Quiz =
 export type Courses = typeof mockData.courses;
 
 export type Course = Courses[0];
+
+export type Chapter = Course["chapters"][0];
+export type Database = typeof mockData;
