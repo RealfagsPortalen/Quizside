@@ -9,13 +9,13 @@ export const mockData = {
       chapters: [
         {
           id: "1",
-          title: "What is React?",
+          title: "What is React??",
           description:
             "React is a JavaScript library for building user interfaces",
           topics: [
             {
               id: "1",
-              title: "What is React?",
+              title: "What is React???",
               description:
                 "React is a JavaScript library for building user interfaces",
               quizzes: [
@@ -187,7 +187,7 @@ export const mockData = {
       ],
     },
     {
-      id: "1",
+      id: "2",
       title: "Introduction to React",
       description: "Learn the fundamentals of React",
       img: "http://localhost:3000/courseImage.png",
@@ -210,7 +210,7 @@ export const mockData = {
       ],
     },
     {
-      id: "1",
+      id: "3",
       title: "Introduction to React",
       description: "Learn the fundamentals of React",
       img: "http://localhost:3000/courseImage.png",
@@ -306,7 +306,7 @@ export const mockData = {
       ],
     },
     {
-      id: "1",
+      id: "4",
       title: "Introduction to React",
       description: "Learn the fundamentals of React",
       img: "http://localhost:3000/courseImage.png",
@@ -319,13 +319,13 @@ export const mockData = {
           topics: [
             {
               id: "1",
-              title: "What is React?",
+              title: "What is React??",
               description:
                 "React is a JavaScript library for building user interfaces",
               quizzes: [
                 {
                   id: "1",
-                  title: "What is React?",
+                  title: "What is React??",
                   description:
                     "React is a JavaScript library for building user interfaces",
                   questions: [
@@ -406,6 +406,10 @@ export const mockData = {
 
 export type Quiz =
   typeof mockData.courses[0]["chapters"][0]["topics"][0]["quizzes"][0];
+
+export type topic = typeof mockData.courses[0]["chapters"][0]["topics"][0];
+
+export type topics = typeof mockData.courses[0]["chapters"][0]["topics"];
 
 export type Courses = typeof mockData.courses;
 

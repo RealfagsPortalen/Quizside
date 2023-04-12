@@ -18,11 +18,13 @@ export const Button: FC<
       border: "none",
       borderRadius: borderRadius.default,
       display: "flex",
+      width: "fit-content",
       gap: "0.5rem",
       alignItems: "center",
       height: "2.5rem", // 40px
       cursor: "pointer",
       transition: "background-color 0.2s ease-in-out",
+      "white-space": "nowrap",
       ":disabled": {
         backgroundColor: colors.primary[300],
       },
@@ -35,10 +37,10 @@ export const Button: FC<
       },
     },
     secondary: {
-      backgroundColor: colors.gray[200],
+      backgroundColor: colors.secondary[200],
       color: colors.gray[900],
       "&:hover": {
-        backgroundColor: colors.gray[300],
+        backgroundColor: colors.secondary[300],
       },
     },
   };

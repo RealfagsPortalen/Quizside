@@ -67,7 +67,7 @@ export const QuestionButtonRow: React.FC<QuestionButtonRowProps> = ({
         {state.showAnswer ? "Skjul løsningsforslag" : "Vis løsningsforslag"}
       </Button>
       <ButtonWithTooltip
-        icon="rightArrow"
+        icon="arrowRight"
         onClick={() => dispatch({ type: "NEXT" })}
       >
         {isLastQuestion ? "Se resultat" : "Neste spørsmål"}
