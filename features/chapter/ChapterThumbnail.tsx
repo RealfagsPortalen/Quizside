@@ -1,3 +1,4 @@
+import { Card } from "@ui/Card";
 import { PieChart } from "@ui/PieChart";
 import { borderRadius, colors } from "@ui/design-tokens";
 import Link from "next/link";
@@ -21,28 +22,21 @@ export const ChapterThumbnail: React.FC<ChapterThumbnailProps> = ({
   totalQuestions,
 }) => {
   return (
-    <Link
-      href={href}
-      css={{
-        borderRadius: borderRadius.default,
-        backgroundColor: colors.gray[50],
-        padding: "1rem",
-        boxShadow: "-5px 5px 0px #EDE8FF",
-        display: "flex",
-        gap: "1rem",
-        justifyContent: "space-between",
-      }}
-    >
-      <div>
-        <h2>{title}</h2>
-        <p>{unsolvedQuizzes} Uløste quizer</p>
-      </div>
-      <div css={{ width: 50 }}>
-        <PieChart
-          attemptedPercentage={attemptedQuestions / totalQuestions}
-          completedPercentage={solvedQuestions / totalQuestions}
-        />
-      </div>
+    <Link href={href}>
+      <Card
+        css={{ display: "flex", justifyContent: "space-between", gap: "1rem" }}
+      >
+        <div>
+          <h2>{title}</h2>
+          <p>{unsolvedQuizzes} Uløste quizer</p>
+        </div>
+        <div css={{ width: 50 }}>
+          <PieChart
+            attemptedPercentage={attemptedQuestions / totalQuestions}
+            completedPercentage={solvedQuestions / totalQuestions}
+          />
+        </div>
+      </Card>
     </Link>
   );
 };

@@ -32,3 +32,7 @@ export const colors = {
 export const borderRadius = {
   default: "0.5rem",
 };
+
+export const boxShadow = {
+  card: "-5px 5px 0px #EDE8FF",
+};
