@@ -47,6 +47,7 @@ const TopicOverviewPage: React.FC<TopicOverviewPageProps> = ({
             {topics.map(({ quizzes }, i) =>
               quizzes.map((quiz) => (
                 <QuizThumbnail
+                  key={quiz.id}
                   title={quiz.name}
                   href={`/kurs/${course.id}/${chapter.id}/${quiz.id}`}
                   questions={quiz.questions}
