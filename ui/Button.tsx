@@ -45,6 +45,7 @@ export const Button: FC<
     },
   };
   return (
+    // @ts-ignore
     <button css={{ ...style.base, ...(style[variant] || {}) }} {...props}>
       {children}
       {icon && <Icon icon={icon} size={24} />}

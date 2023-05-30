@@ -71,7 +71,7 @@ export const QuestionAnswerOption: FC<{
       type="radio"
       onChange={onChange}
       checked={checked}
-      name={questionID}
+      name={questionID.toString()}
     />
     <div />
     <LatexText latex={label} />
