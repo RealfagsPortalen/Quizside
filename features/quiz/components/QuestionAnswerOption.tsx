@@ -5,7 +5,7 @@ export const QuestionAnswerOption: FC<{
   onChange: () => void;
   checked: boolean;
   label: string;
-  questionID: string;
+  questionID: number;
   hasAnswered?: boolean;
   correct: true | false | undefined;
   id: string;

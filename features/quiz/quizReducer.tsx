@@ -1,22 +1,16 @@
 import { useReducer } from "react";
-import { Quiz } from "../../mockData";
 import { QuizType } from "@types";
+import { getUserID } from "../../lib/user";
+import { useRouter } from "next/router";
 
 export type QuizState = {
   questionNumber: number;
   selectedAnswer: number | undefined;
   showAnswer: boolean;
-  answers: { questionID: string; correct: boolean }[];
-  quiz: QuizType;
+  checkAnswer: boolean;
+  answers: { questionID: number; correct: boolean }[];
   finished: boolean;
-};
-
-const initialState = {
-  questionNumber: 0,
-  showAnswer: false,
-  selectedAnswer: undefined,
-  finished: false,
-  answers: [],
+  quiz: QuizType;
 };
 
 export type QuizActions =
@@ -29,7 +23,17 @@ export type QuizActions =
   | { type: "SHOW_ANSWER"; show: boolean }
   | { type: "RESTART" };
 
-export const useQuizReducer = (quiz: Quiz) => {
+export const useQuizReducer = (quiz: QuizType) => {
+  const initialState: QuizState = {
+    questionNumber: 0,
+    selectedAnswer: undefined,
+    showAnswer: false,
+    checkAnswer: false,
+    answers: Array(quiz.questions.length).fill(undefined),
+    finished: false,
+    quiz,
+  };
+
   const reducer = (state: QuizState, action: QuizActions) => {
     const hasAnswered = state.answers[state.questionNumber] !== undefined;
     switch (action.type) {
@@ -46,10 +50,11 @@ export const useQuizReducer = (quiz: Quiz) => {
       case "PREVIOUS":
         if (state.questionNumber <= 0) return state;
         return {
+          ...state,
           questionNumber: state.questionNumber - 1,
           showAnswer: false,
           selectedAnswer: undefined,
-          answers: state.answers,
+          checkAnswer: false,
         };
 
       case "SHOW_ANSWER":
@@ -61,10 +66,20 @@ export const useQuizReducer = (quiz: Quiz) => {
         answers[state.questionNumber] = {
           questionID: quiz.questions[state.questionNumber].id,
           correct:
-            quiz.questions[state.questionNumber].answerOptions[
-              state.selectedAnswer
-            ].isCorrect,
+            quiz.questions[state.questionNumber].options[state.selectedAnswer]
+              .isCorrect,
         };
+
+        fetch(`/api/answer`, {
+          method: "POST",
+          body: JSON.stringify({
+            userId: getUserID(useRouter()),
+            questionId: quiz.questions[state.questionNumber].id,
+            isCorrect: answers[state.questionNumber].correct,
+          }),
+        })
+          .then((res) => res.json())
+          .catch((err) => console.log(err));
 
         return {
           ...state,
@@ -73,7 +88,7 @@ export const useQuizReducer = (quiz: Quiz) => {
 
       case "SELECT_ANSWER":
         if (hasAnswered) return state;
-        if (action.answer < 0 || action.answer > quiz.questions.length) {
+        if (action.answer < 0 || action.answer > 1 + quiz.questions.length) {
           return state;
         }
         return { ...state, selectedAnswer: action.answer };
@@ -94,18 +109,18 @@ export const useQuizReducer = (quiz: Quiz) => {
             (state.selectedAnswer != undefined &&
               Math.min(
                 state.selectedAnswer + 1,
-                quiz.questions[state.questionNumber].answerOptions.length - 1
+                quiz.questions[state.questionNumber].options.length - 1
               )) ||
             0,
         };
 
       case "RESTART":
-        return { ...initialState, quiz };
+        return { ...initialState };
 
       default:
         throw new Error("Invalid action");
     }
   };
 
-  return useReducer(reducer, { ...initialState, quiz });
+  return useReducer(reducer, initialState);
 };

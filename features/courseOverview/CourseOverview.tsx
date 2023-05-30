@@ -1,7 +1,7 @@
 import { CourseThumbnail } from "@features/courseOverview/CourseThumbnail";
 import { FC } from "react";
-import { Courses } from "../../mockData";
-export const CourseOverview: FC<{ courses: Courses }> = ({ courses }) => {
+import { CourseType } from "@types";
+export const CourseOverview: FC<{ courses: CourseType[] }> = ({ courses }) => {
   return (
     <section
       css={{

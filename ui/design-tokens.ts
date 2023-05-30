@@ -38,6 +38,7 @@ export const colors = {
     "500": "#a36600",
     "700": "#824200",
   },
+  bg: "#DFD8FC",
 };
 
 export const borderRadius = {

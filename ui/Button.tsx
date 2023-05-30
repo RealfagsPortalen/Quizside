@@ -24,7 +24,7 @@ export const Button: FC<
       height: "2.5rem", // 40px
       cursor: "pointer",
       transition: "background-color 0.2s ease-in-out",
-      "white-space": "nowrap",
+      whiteSpace: "nowrap",
       ":disabled": {
         backgroundColor: colors.primary[300],
       },

@@ -1,28 +1,42 @@
 import { QuizThumbnail } from "@features/chapterOverview/QuizThumbnail";
-import { GetStaticPaths, GetStaticProps } from "next";
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
 import * as React from "react";
-import { Chapter, Database } from "../../../../mockData";
 import { colors } from "@ui/design-tokens";
 import { Container } from "@ui/Container";
 import { QuestionList } from "@features/chapterOverview/QuestionList";
 import { Breadcrumb } from "@ui/Breadcrumb";
+import { ChapterType, CourseType, QuizType, TopicType } from "@types";
+import { getUserID } from "../../../../lib/user";
+import { useRouter } from "next/router";
 
 interface TopicOverviewPageProps {
-  chapter: Chapter;
+  chapter: ChapterType;
+  course: CourseType;
+  topics: TopicType[];
 }
 
-const TopicOverviewPage: React.FC<TopicOverviewPageProps> = ({ chapter }) => {
+const TopicOverviewPage: React.FC<TopicOverviewPageProps> = ({
+  chapter,
+  course,
+  topics,
+}) => {
   return (
     <div>
-      <header css={{ backgroundColor: colors.secondary[400] }}>
-        <Container>
+      <header
+        css={{
+          backgroundColor: colors.secondary[200],
+        }}
+      >
+        <Container
+          className={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+        >
           <Breadcrumb
             items={[
-              { href: "/kurs/1", label: "Matematikk 1" },
-              { href: "", label: chapter.title },
+              { href: "/kurs/1", label: course.name },
+              { href: "", label: chapter.name },
             ]}
           />
-          <h1>{chapter.title}</h1>
+          <h1>{chapter.name}</h1>
           <div
             css={{
               display: "grid",
@@ -30,60 +44,100 @@ const TopicOverviewPage: React.FC<TopicOverviewPageProps> = ({ chapter }) => {
               gap: "1rem",
             }}
           >
-            {chapter.topics.map(({ quizzes }) =>
-              quizzes.map((quiz, i) => (
+            {topics.map(({ quizzes }, i) =>
+              quizzes.map((quiz) => (
                 <QuizThumbnail
-                  title={quiz.title}
-                  href={quiz.id}
-                  questions={[
-                    "correct",
-                    "incorrect",
-                    "incorrect",
-                    "correct",
-                    "unanswered",
-                  ]}
-                  attempted={!(i % 2)}
+                  title={quiz.name}
+                  href={`/kurs/${course.id}/${chapter.id}/${quiz.id}`}
+                  questions={quiz.questions}
+                  attempted={
+                    quiz.userStatistics.totalAnswered != 0 ||
+                    quiz.userStatistics.totalCorrectlyAnswered != 0
+                  }
                 />
               ))
             )}
           </div>
         </Container>
       </header>
-      <Container>
-        <QuestionList topics={chapter.topics} />
-      </Container>
+      {
+        <Container>
+          <QuestionList topics={topics} chapterName={chapter.name} />
+        </Container>
+      }
     </div>
   );
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const quizzes = await fetch("http://localhost:3000/api/getQuizzes/");
-  const data: Database = await quizzes.json();
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  query,
+}) => {
+  if (!query?.userId)
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/no-user",
+      },
+      props: {},
+    };
+
+  let chaptersData = fetch(
+    `${process.env.API_URL}/chapters/user-statistics/${
+      params && params.courseSlug
+    }`,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        userId: query.userId,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  ).then((res) => res.json());
+
+  let coursesData = fetch(`${process.env.API_URL}/courses/user-statistics/`, {
+    method: "POST",
+    body: JSON.stringify({
+      userId: query.userId,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => {
+    return res.json();
+  });
+
+  let topicsData = fetch(
+    `${process.env.API_URL}/topics/${params && params.chapterSlug}/nested/${
+      query.userId
+    }`
+  ).then((res) => res.json());
+
+  let [chapters, courses, topics] = await Promise.all([
+    chaptersData,
+    coursesData,
+    topicsData,
+  ]);
+
+  courses = courses.find(
+    ({ id }: ChapterType) =>
+      id === (params && params.courseSlug && +params.courseSlug)
+  );
+
+  chapters = chapters.find(
+    ({ id }: ChapterType) =>
+      id === (params && params.chapterSlug && +params.chapterSlug)
+  );
 
   return {
-    paths: data.courses
-      .map((course) =>
-        course.chapters.map((chapter) => ({
-          courseSlug: course.id,
-          chapterSlug: chapter.id,
-        }))
-      )
-      .flat(3)
-      .map((path) => ({ params: path })),
-    fallback: false,
+    props: {
+      chapter: chapters,
+      course: courses,
+      topics,
+    },
   };
-};
-
-export const getStaticProps: GetStaticProps = async (context) => {
-  const quizzes = await fetch("http://localhost:3000/api/getQuizzes/");
-
-  const quizzesData: Database = await quizzes.json();
-
-  const chapter = quizzesData.courses
-    .find((course) => course.id === context.params.courseSlug)
-    ?.chapters.find((chapter) => chapter.id === context.params.chapterSlug);
-
-  return { props: { chapter: chapter } };
 };
 
 export default TopicOverviewPage;

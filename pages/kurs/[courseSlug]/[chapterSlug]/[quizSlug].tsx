@@ -1,12 +1,15 @@
 import * as React from "react";
-import { GetStaticPaths, GetStaticProps } from "next";
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
 import { mockData } from "../../../../mockData";
 import { useQuizReducer } from "@features/quiz/quizReducer";
 import { QuizQuestion } from "@features/quiz/components/QuizQuestion";
 import { QuizResult } from "@features/quiz/components/QuizResult";
+import { QuizType, TopicType } from "@types";
+import { getUserID } from "../../../../lib/user";
+import { useRouter } from "next/router";
 
 interface QuizDetailPageProps {
-  quiz: typeof mockData.courses[0]["chapters"][0]["topics"][0]["quizzes"][0];
+  quiz: QuizType;
 }
 
 // Check if page is embedded or not in an iframe
@@ -23,42 +26,40 @@ const Quiz: React.FC<QuizDetailPageProps> = ({ quiz }) => {
   );
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const quizzes = await fetch("http://localhost:3000/api/getQuizzes/");
-  const data: typeof mockData = await quizzes.json();
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  query,
+}) => {
+  if (!query?.userId)
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/no-user",
+      },
+      props: {},
+    };
+
+  let topicsData = fetch(
+    `${process.env.API_URL}/topics/${params && params.chapterSlug}/nested/${
+      query.userId
+    }`
+  ).then((res) => res.json());
+
+  let topics: TopicType[] = await topicsData;
+
+  let quiz: QuizType | undefined;
+
+  if (params)
+    quiz = topics
+      .map(({ quizzes }) => quizzes)
+      .flat()
+      .find(({ id }) => id === +(params.quizSlug ?? "0"));
 
   return {
-    paths: data.courses
-      .map((course) =>
-        course.chapters.map((chapter) =>
-          chapter.topics.map((topic) =>
-            topic.quizzes.map((quiz) => ({
-              courseSlug: course.id,
-              chapterSlug: chapter.id,
-              quizSlug: quiz.id,
-            }))
-          )
-        )
-      )
-      .flat(3)
-      .map((path) => ({ params: path })),
-    fallback: false,
+    props: {
+      quiz: quiz || null,
+    },
   };
-};
-
-export const getStaticProps: GetStaticProps = async (context) => {
-  const quizzes = await fetch("http://localhost:3000/api/getQuizzes/");
-
-  const quizzesData: typeof mockData = await quizzes.json();
-
-  const quiz = quizzesData.courses
-    .find((course) => course.id === context.params.courseSlug)
-    ?.chapters.find((chapter) => chapter.id === context.params.chapterSlug)
-    ?.topics.map((topic) => topic.quizzes)
-    .flat()
-    .find((quiz) => quiz.id === context.params.quizSlug);
-
-  return { props: { quiz: quiz } };
 };
 
 export default Quiz;

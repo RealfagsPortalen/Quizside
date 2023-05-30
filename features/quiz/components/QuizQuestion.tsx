@@ -31,11 +31,11 @@ export const QuizQuestion: React.FC<QuestionProps> = ({
       />
       <div css={{ margin: "3rem 0" }}>
         <h1>
-          <LatexText latex={question.questionText} />
+          <LatexText latex={question.question} />
         </h1>
       </div>
       <QuestionAnswerOptionsContainer
-        answerOptions={question.answerOptions}
+        options={question.options}
         state={state}
         dispatch={dispatch}
         questionID={question.id}

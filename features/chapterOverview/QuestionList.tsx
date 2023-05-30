@@ -6,13 +6,9 @@ import * as React from "react";
 import { CorrectSymbol } from "@ui/CorrectSymbol";
 import { Button } from "@ui/Button";
 import { topic, topics } from "../../mockData";
-import { QuestionType } from "@types";
+import { QuestionType, TopicType } from "@types";
 import { LatexText } from "@ui/LatexText";
 import { Icon } from "@ui/Icon/Icon";
-
-interface QuestionListProps {
-  topics: topics;
-}
 
 const Question: React.FC<{
   question: QuestionType;
@@ -22,7 +18,13 @@ const Question: React.FC<{
   const [open, setOpen] = React.useState(false);
   const [showSolution, setShowSolution] = React.useState(false);
   return (
-    <Card>
+    <div
+      css={{
+        borderRadius: "10px",
+        backgroundColor: colors.secondary[100],
+        padding: "0.5rem",
+      }}
+    >
       <div css={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
         <a
           onClick={() => setOpen(!open)}
@@ -43,39 +45,36 @@ const Question: React.FC<{
         {open && (
           <>
             <h4>
-              <LatexText latex={question.questionText} />
+              <LatexText latex={question.question} />
             </h4>
             <a
-              css={{ textDecoration: "underline" }}
+              css={{ textDecoration: "underline", cursor: "pointer" }}
               onClick={() => setShowSolution(!showSolution)}
             >
               {showSolution ? "Skjul løsningsforslag" : "Vis løsningsforslag"}
             </a>
             {showSolution && (
               <p>
-                <LatexText
-                  latex={
-                    question.answerOptions.find(({ isCorrect }) => isCorrect)
-                      ?.optionText || "Ingen løsningsforslag"
-                  }
-                />
+                <LatexText latex={question.solution} />
               </p>
             )}
           </>
         )}
       </div>
-    </Card>
+    </div>
   );
 };
 
-const Topic: React.FC<{ topic: topic; topicNumber: number }> = ({
+const Topic: React.FC<{ topic: TopicType; topicNumber: number }> = ({
   topic,
   topicNumber,
 }) => {
   let questionNumber = 1;
   return (
     <div css={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-      <h2>{topic.title}</h2>
+      <h3>
+        {topicNumber}. {topic.name}
+      </h3>
       {topic.quizzes.map(({ questions }, i) =>
         questions.map((question, i) => (
           <Question
@@ -90,9 +89,28 @@ const Topic: React.FC<{ topic: topic; topicNumber: number }> = ({
   );
 };
 
-export const QuestionList: React.FC<QuestionListProps> = ({ topics }) => {
+export const QuestionList: React.FC<{
+  topics: TopicType[];
+  chapterName: string;
+}> = ({ topics, chapterName }) => {
   return (
     <div>
+      <div css={{ maxWidth: "26.25rem", paddingBottom: "2rem" }}>
+        <h2
+          css={{
+            background:
+              "linear-gradient(to right, currentColor 0%, currentColor 70%, transparent 70%, transparent 100%) repeat-x left bottom",
+            backgroundSize: "15px 1px",
+            marginBottom: "0.5rem",
+          }}
+        >
+          Alle oppgaver i {chapterName.toLowerCase()}
+        </h2>
+        <p>
+          Her kan du velge oppgavene individuelt. Dette er ikke en quiz, så det
+          er ingen svaralternativer.
+        </p>
+      </div>
       {topics.map((topic, i) => (
         <Topic key={i} topic={topic} topicNumber={i + 1} />
       ))}

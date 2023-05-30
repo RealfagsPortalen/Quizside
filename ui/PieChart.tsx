@@ -77,31 +77,52 @@ export const PieChart: React.FC<PieChartProps> = ({
           radius * 2 + width * 2
         }`}
       >
-        <circle cx={radius} cy={0} r={width / 2} fill={colors.success[300]} />
         <path
-          d={drawArc(radius, radius, radius, 0, 360 * attemptedPercentage)}
+          d={drawArc(radius, radius, radius, 1, 360)}
           fill="none"
-          stroke={colors.error[300]}
+          stroke={colors.gray[200]}
           strokeWidth={width}
         />
-        <circle
-          cx={attemptedCoords.x}
-          cy={attemptedCoords.y}
-          r={width / 2}
-          fill={colors.error[300]}
-        />
-        <path
-          d={drawArc(radius, radius, radius, 0, 360 * completedPercentage)}
-          fill="none"
-          stroke={colors.success[300]}
-          strokeWidth={width}
-        />
-        <circle
-          cx={completedCoords.x}
-          cy={completedCoords.y}
-          r={width / 2}
-          fill={colors.success[300]}
-        />
+        <circle cx={radius} cy={0} r={width / 2} fill={colors.gray[200]} />
+        {attemptedPercentage != 0 && (
+          <>
+            <circle cx={radius} cy={0} r={width / 2} fill={colors.error[300]} />
+            <path
+              d={drawArc(radius, radius, radius, 0, 360 * attemptedPercentage)}
+              fill="none"
+              stroke={colors.error[300]}
+              strokeWidth={width}
+            />
+            <circle
+              cx={attemptedCoords.x}
+              cy={attemptedCoords.y}
+              r={width / 2}
+              fill={colors.error[300]}
+            />
+          </>
+        )}
+        {completedPercentage != 0 && (
+          <>
+            <circle
+              cx={radius}
+              cy={0}
+              r={width / 2}
+              fill={colors.success[300]}
+            />
+            <path
+              d={drawArc(radius, radius, radius, 0, 360 * completedPercentage)}
+              fill="none"
+              stroke={colors.success[300]}
+              strokeWidth={width}
+            />
+            <circle
+              cx={completedCoords.x}
+              cy={completedCoords.y}
+              r={width / 2}
+              fill={colors.success[300]}
+            />
+          </>
+        )}
       </svg>
     </div>
   );

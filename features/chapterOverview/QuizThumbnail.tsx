@@ -5,11 +5,14 @@ import Link from "next/link";
 import * as React from "react";
 import { CorrectSymbol } from "@ui/CorrectSymbol";
 import { Button } from "@ui/Button";
+import { QuestionType } from "@types";
+import { getUserID } from "../../lib/user";
+import { useRouter } from "next/router";
 
 interface QuizThumbnailProps {
   title: string;
   href: string;
-  questions: ("correct" | "incorrect" | "unanswered")[];
+  questions: QuestionType[];
   attempted: boolean;
 }
 
@@ -20,7 +23,7 @@ export const QuizThumbnail: React.FC<QuizThumbnailProps> = ({
   attempted,
 }) => {
   return (
-    <Link href={href}>
+    <Link href={{ pathname: href, query: { userId: getUserID(useRouter()) } }}>
       <Card
         css={{
           display: "flex",
@@ -31,9 +34,16 @@ export const QuizThumbnail: React.FC<QuizThumbnailProps> = ({
       >
         <div>
           <h2>{title}</h2>
-          <div css={{ display: "flex", gap: "0.5rem" }}>
+          <div css={{ display: "flex", gap: "0.5rem", padding: "1rem 0 0" }}>
             {questions.map((question) => (
-              <CorrectSymbol variant={question} size={24} />
+              <CorrectSymbol
+                variant={
+                  (question.answeredCorrectly && "correct") ||
+                  (question.answered && "incorrect") ||
+                  "unanswered"
+                }
+                size={24}
+              />
             ))}
           </div>
         </div>
