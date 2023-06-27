@@ -68,6 +68,27 @@ export const QuizResult: React.FC<QuzResultProps> = ({ state, dispatch }) => {
         >
           Prøv igjen
         </Button>
+        {!inIframe() && (
+          <Button
+            variant="primary"
+            onClick={() => {
+              const currentLocation = window.location.pathname;
+              console.log("currentLocation", currentLocation);
+              const userIdSplit = currentLocation.split("?userId");
+              const newLastPart =
+                userIdSplit.length === 2 ? `?userId${userIdSplit[1]}` : "";
+              const CourseSplit = userIdSplit[0].split("kurs/");
+              const afterCourse = CourseSplit[1]
+                .split("/")
+                .slice(0, 2)
+                .join("/");
+
+              window.location.pathname = `/kurs/${afterCourse}${newLastPart}`;
+            }}
+          >
+            Tilbake til kapittel
+          </Button>
+        )}
       </div>
     </div>
   );
