@@ -23,7 +23,7 @@ export const QuestionAnswerOptionsContainer: React.FC<
       }}
     >
       <h3>Velg et svar</h3>
-      <p>Du kan også bruke tallene på tatstaturet for å velge.</p>
+      <p>Du kan også bruke tallene på tastaturet for å velge.</p>
       <div css={{ marginTop: "1rem" }}>
         {options.map((answerOption, i) => {
           return (
