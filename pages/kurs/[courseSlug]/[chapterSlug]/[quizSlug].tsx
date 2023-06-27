@@ -1,12 +1,10 @@
-import * as React from "react";
-import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
-import { mockData } from "../../../../mockData";
-import { useQuizReducer } from "@features/quiz/quizReducer";
 import { QuizQuestion } from "@features/quiz/components/QuizQuestion";
 import { QuizResult } from "@features/quiz/components/QuizResult";
+import { useQuizReducer } from "@features/quiz/quizReducer";
 import { QuizType, TopicType } from "@types";
+import { GetServerSideProps } from "next";
+import * as React from "react";
 import { getUserID } from "../../../../lib/user";
-import { useRouter } from "next/router";
 
 interface QuizDetailPageProps {
   quiz: QuizType;
@@ -30,7 +28,8 @@ export const getServerSideProps: GetServerSideProps = async ({
   params,
   query,
 }) => {
-  if (!query?.userId)
+  const userId: string | null = getUserID(query);
+  if (!userId) {
     return {
       redirect: {
         permanent: false,
@@ -38,11 +37,12 @@ export const getServerSideProps: GetServerSideProps = async ({
       },
       props: {},
     };
+  }
 
   let topicsData = fetch(
-    `${process.env.API_URL}/topics/${params && params.chapterSlug}/nested/${
-      query.userId
-    }`
+    `${process.env.API_URL}/topics/${
+      params && params.chapterSlug
+    }/nested/${userId}`
   ).then((res) => res.json());
 
   let topics: TopicType[] = await topicsData;

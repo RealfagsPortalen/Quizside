@@ -23,7 +23,9 @@ export const QuizThumbnail: React.FC<QuizThumbnailProps> = ({
   attempted,
 }) => {
   return (
-    <Link href={{ pathname: href, query: { userId: getUserID(useRouter()) } }}>
+    <Link
+      href={{ pathname: href, query: { userId: getUserID(useRouter().query) } }}
+    >
       <Card
         css={{
           display: "flex",

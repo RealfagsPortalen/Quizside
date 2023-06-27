@@ -55,7 +55,8 @@ export const getServerSideProps: GetServerSideProps = async ({
   params,
   query,
 }) => {
-  if (!query?.userId)
+  const userId: string | null = getUserID(query);
+  if (!userId) {
     return {
       redirect: {
         permanent: false,
@@ -63,6 +64,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       },
       props: {},
     };
+  }
 
   let chaptersData = fetch(
     `${process.env.API_URL}/chapters/user-statistics/${
@@ -71,7 +73,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     {
       method: "POST",
       body: JSON.stringify({
-        userId: query?.userId,
+        userId,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -82,7 +84,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   let coursesData = fetch(`${process.env.API_URL}/courses/user-statistics/`, {
     method: "POST",
     body: JSON.stringify({
-      userId: query?.userId,
+      userId,
     }),
     headers: {
       "Content-Type": "application/json",

@@ -1,7 +1,10 @@
 import { CourseThumbnail } from "@features/courseOverview/CourseThumbnail";
-import { FC } from "react";
 import { CourseType } from "@types";
-export const CourseOverview: FC<{ courses: CourseType[] }> = ({ courses }) => {
+import { FC } from "react";
+export const CourseOverview: FC<{ courses: CourseType[]; userId: string }> = ({
+  courses,
+  userId,
+}) => {
   return (
     <section
       css={{
@@ -13,7 +16,7 @@ export const CourseOverview: FC<{ courses: CourseType[] }> = ({ courses }) => {
       }}
     >
       {courses.map((course, i) => (
-        <CourseThumbnail key={i} course={course} />
+        <CourseThumbnail key={i} course={course} userId={userId} />
       ))}
     </section>
   );

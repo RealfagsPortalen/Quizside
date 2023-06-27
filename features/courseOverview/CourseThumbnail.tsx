@@ -1,20 +1,20 @@
-import Link from "next/link";
-import { FC } from "react";
-import { Course } from "../../mockData";
-import { Button } from "../../ui/Button";
-import { Image } from "../../ui/Image";
-import { PieChart } from "@ui/PieChart";
-import { Card } from "@ui/Card";
 import { CourseType } from "@types";
-import { getUserID } from "../../lib/user";
+import { Card } from "@ui/Card";
+import { PieChart } from "@ui/PieChart";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import { FC } from "react";
+import { getUserID } from "../../lib/user";
 
-export const CourseThumbnail: FC<{ course: CourseType }> = ({ course }) => {
+export const CourseThumbnail: FC<{ course: CourseType; userId: string }> = ({
+  course,
+  userId,
+}) => {
   return (
     <Link
       href={{
         pathname: `/kurs/${course.id}`,
-        query: { userId: getUserID(useRouter()) },
+        query: { userId },
       }}
       css={{}}
     >

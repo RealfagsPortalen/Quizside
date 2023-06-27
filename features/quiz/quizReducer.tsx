@@ -73,7 +73,7 @@ export const useQuizReducer = (quiz: QuizType) => {
         fetch(`/api/answer`, {
           method: "POST",
           body: JSON.stringify({
-            userId: getUserID(useRouter()),
+            userId: getUserID(useRouter().query),
             questionId: quiz.questions[state.questionNumber].id,
             isCorrect: answers[state.questionNumber].correct,
           }),

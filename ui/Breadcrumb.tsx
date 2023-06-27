@@ -1,9 +1,9 @@
-import * as React from "react";
-import Link from "next/link";
-import { Icon } from "@ui/Icon/Icon";
 import { colors } from "@ui/design-tokens";
-import { getUserID } from "../lib/user";
+import { Icon } from "@ui/Icon/Icon";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import * as React from "react";
+import { getUserID } from "../lib/user";
 
 interface BreadcrumbProps {
   items: { label: string; href?: string }[];
@@ -18,7 +18,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
             <Link
               href={{
                 pathname: item.href,
-                query: { userId: getUserID(useRouter()) },
+                query: { userId: getUserID(useRouter().query) },
               }}
             >
               {item.label}

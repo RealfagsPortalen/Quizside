@@ -1,10 +1,9 @@
 import { Card } from "@ui/Card";
 import { PieChart } from "@ui/PieChart";
-import { borderRadius, colors } from "@ui/design-tokens";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import * as React from "react";
 import { getUserID } from "../../lib/user";
-import { useRouter } from "next/router";
 
 interface ChapterThumbnailProps {
   title: string;
@@ -24,7 +23,9 @@ export const ChapterThumbnail: React.FC<ChapterThumbnailProps> = ({
   totalQuestions,
 }) => {
   return (
-    <Link href={{ pathname: href, query: { userId: getUserID(useRouter()) } }}>
+    <Link
+      href={{ pathname: href, query: { userId: getUserID(useRouter().query) } }}
+    >
       <Card
         css={{ display: "flex", justifyContent: "space-between", gap: "1rem" }}
       >

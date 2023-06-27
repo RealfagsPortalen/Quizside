@@ -1,3 +1,15 @@
+export interface User {
+  id: string;
+  email: string;
+  learnWorldsUserId: string;
+  phoneNumber: string;
+  firstName: string;
+  lastName: string;
+  hasMadeFirstPurchase: boolean;
+
+  recruitedById?: string;
+}
+
 export type QuizType = {
   id: number;
   name: string;
